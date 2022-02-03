@@ -13,20 +13,23 @@
 
 #include "Solution.hpp"
 #include "ProblemInstance.hpp"
-#include "IteratedLocalSearch.hpp"
-#include "SwapNeighborhood.hpp"
 #include "SwapDisturbance.hpp"
 #include "SideDisturbance.hpp"
 #include "RandomCutCrossOver.hpp"
 #include "ContestSelection.hpp"
 #include "Genetic.hpp"
-#include "GRASP.hpp"
 
 int main(int argc, char const *argv[]) {
-    if (argc != 5) {
+    if (argc != 10) {
         std::cout << "O programa deve receber o caminho para arquivo com os dados da instância." << std::endl;
         std::cout << "A seed para realizar o shuffle dos elementos antes de aplicar o algoritmo escolhido (Os items já estão ordenados nos arquivos)" << std::endl;
         std::cout << "Em seguida o tempo máximo em minutos que o programa pode executar até encontrar o resultado ótimo" << std::endl;
+
+        std::cout << "Então os parametros para o algoritmo genético:" << std::endl;
+        std::cout << "Número de participantes do torneio de seleção para o cruzamento" << std::endl;
+        std::cout << "Taxa de mutação seguida da taxa de cruzamento, entre 0 e 1" << std::endl;
+        std::cout << "Número de épocas (iterações do algoritmo) e tamanho da população" << std::endl;
+
         std::cout << "E por fim o nível de detalhe a ser informado na saida padrão sobre os resultados obtidos (0-3)" << std::endl;
         std::cout << "0 - Apenas a quantidade de bins usada e o tempo em nanosegundos" << std::endl;
         std::cout << "1 - O anterior e o tempo em segundos" << std::endl;
@@ -61,28 +64,27 @@ int main(int argc, char const *argv[]) {
         std::cout << "O tempo máximo em minutos deve ser maior que 0" << std::endl;
         return 1;
     }
-    const long int detail_level = std::strtoul(argv[4], nullptr, 10);
+
+    size_t contest_size = std::strtoul(argv[4], nullptr, 10);
+    double mutation_rate = std::strtod(argv[5], nullptr);
+    double cross_rate = std::strtod(argv[6], nullptr);
+    size_t n_epochs = std::strtoul(argv[7], nullptr, 10);
+    size_t population_size = std::strtoul(argv[8], nullptr, 10);
+
+    const long detail_level = std::strtol(argv[9], nullptr, 10);
     if (!(detail_level > -1 && detail_level < 4)) {
         std::cout << "O nível de detalhe deve ser qualquer inteiro entre {0,1,2,3}" << std::endl;
         return 1;
     }
     ProblemInstance instance(C, N, items);
-    SwapNeighborhood neighborhood;
-    
-    // SwapDisturbance disturbance(dre, uid);
     SideDisturbance disturbance((*uid)(*dre));
     RandomCutCrossOver cross(dre, uid);
-    ContestSelection selection(10, dre, uid);
-
-    LocalSearch lsearch(&instance, &neighborhood);
-    // IteratedLocalSearch search(&instance, &neighborhood, &disturbance, 1000, 100000);
-    // Genetic search(&instance, (*uid)(*dre), &disturbance, 0.1, &cross, 0.5, &selection, 10000, 100000);
-    GRASP search(&instance, (*uid)(*dre), &lsearch, 1, 0.05, 1000000/2, 1000000, 10);
+    ContestSelection selection(contest_size, dre, uid);
+    Genetic search(&instance, (*uid)(*dre), &disturbance, mutation_rate, &cross, cross_rate, &selection, n_epochs, population_size);
 
     const std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     
     Solution* sol = search.Run(instance.GenerateBestFitDecreasingSolution(), max_time_min);
-    // Solution* sol = search.Run(instance.GenerateRandomSolution((*uid)(*dre)), max_time_min);
 
     const std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     

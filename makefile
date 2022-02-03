@@ -9,18 +9,30 @@ BIN_DIR=./bin
 
 CFLAGS = -Wall -pedantic -ansi -std=c++17
 
-all: dir driver
+all: dir ILS_driver Genetic_driver GRASP_driver
 
 otimize: CFLAGS += -ftracer -Ofast
-otimize: dir driver
+otimize: dir ILS_driver Genetic_driver GRASP_driver
 
 debug: CFLAGS += -g -O0 -pg
-debug: driver
+debug: dir ILS_driver Genetic_driver GRASP_driver 
 
-driver: $(OBJ_DIR)/driver.o $(OBJ_DIR)/LocalSearch.o $(OBJ_DIR)/IteratedLocalSearch.o $(OBJ_DIR)/ProblemInstance.o $(OBJ_DIR)/Genetic.o $(OBJ_DIR)/GRASP.o
+ILS_driver: $(OBJ_DIR)/ILS_driver.o $(OBJ_DIR)/ProblemInstance.o $(OBJ_DIR)/IteratedLocalSearch.o 
 	$(CC) $(CFLAGS) -o $(BIN_DIR)/$@ $^
 
-$(OBJ_DIR)/driver.o: $(SRC_DIR)/driver.cpp
+$(OBJ_DIR)/ILS_driver.o: $(SRC_DIR)/ILS_driver.cpp
+	$(CC) -c $(CFLAGS) -I$(INC_DIR)/ -o $@ $<	
+
+Genetic_driver: $(OBJ_DIR)/Genetic_driver.o $(OBJ_DIR)/ProblemInstance.o $(OBJ_DIR)/Genetic.o 
+	$(CC) $(CFLAGS) -o $(BIN_DIR)/$@ $^
+
+$(OBJ_DIR)/Genetic_driver.o: $(SRC_DIR)/Genetic_driver.cpp
+	$(CC) -c $(CFLAGS) -I$(INC_DIR)/ -o $@ $<	
+
+GRASP_driver: $(OBJ_DIR)/GRASP_driver.o $(OBJ_DIR)/ProblemInstance.o $(OBJ_DIR)/GRASP.o $(OBJ_DIR)/LocalSearch.o
+	$(CC) $(CFLAGS) -o $(BIN_DIR)/$@ $^
+
+$(OBJ_DIR)/GRASP_driver.o: $(SRC_DIR)/GRASP_driver.cpp
 	$(CC) -c $(CFLAGS) -I$(INC_DIR)/ -o $@ $<	
 
 $(OBJ_DIR)/LocalSearch.o: $(SRC_DIR)/LocalSearch.cpp $(INC_DIR)/LocalSearch.hpp
