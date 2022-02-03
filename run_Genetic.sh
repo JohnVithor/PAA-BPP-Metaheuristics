@@ -15,13 +15,13 @@ files=$(ls $path_instances)
         bins=0
         for tentativa in $(seq $tentativas)
         do
-            ./bin/Genetic_driver $path_instances$filename $seed $max_time 10 0.1 0.7 5000 3000 3 > ./results/Genetic$filename$tentativa.txt
+            ./bin/Genetic_driver $path_instances$filename $seed $max_time 10 0.15 0.75 1000 1000 3 > ./results/Genetic$filename$tentativa.txt
             bins=$(sed '1!d' ./results/Genetic$filename$tentativa.txt)
             bins="${bins##* }"
 
-            nanosegundos=$(sed '2!d' ./results/$filename$tentativa.txt)
-            segundos=$(sed '3!d' ./results/$filename$tentativa.txt)
-            minutos=$(sed '4!d' ./results/$filename$tentativa.txt)
+            nanosegundos=$(sed '2!d' ./results/Genetic$filename$tentativa.txt)
+            segundos=$(sed '3!d' ./results/Genetic$filename$tentativa.txt)
+            minutos=$(sed '4!d' ./results/Genetic$filename$tentativa.txt)
             nanosegundos="${nanosegundos##* }"
             segundos="${segundos##* }"
             minutos="${minutos##* }"
@@ -30,5 +30,5 @@ files=$(ls $path_instances)
             soma_minutos=$((soma_minutos + minutos))
             
         done
-        echo Genetic,$filename,$((soma_nanosegundos / tentativas)), $((soma_segundos / tentativas)), $((soma_minutos / tentativas)),$bins
+        echo Genetic,$filename,$((soma_nanosegundos / tentativas)),$((soma_segundos / tentativas)),$((soma_minutos / tentativas)),$bins
     done

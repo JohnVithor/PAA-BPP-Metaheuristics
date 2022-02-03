@@ -19,9 +19,9 @@ files=$(ls $path_instances)
             bins=$(sed '1!d' ./results/ILS$filename$tentativa.txt)
             bins="${bins##* }"
 
-            nanosegundos=$(sed '2!d' ./results/$filename$tentativa.txt)
-            segundos=$(sed '3!d' ./results/$filename$tentativa.txt)
-            minutos=$(sed '4!d' ./results/$filename$tentativa.txt)
+            nanosegundos=$(sed '2!d' ./results/ILS$filename$tentativa.txt)
+            segundos=$(sed '3!d' ./results/ILS$filename$tentativa.txt)
+            minutos=$(sed '4!d' ./results/ILS$filename$tentativa.txt)
             nanosegundos="${nanosegundos##* }"
             segundos="${segundos##* }"
             minutos="${minutos##* }"
@@ -30,5 +30,5 @@ files=$(ls $path_instances)
             soma_minutos=$((soma_minutos + minutos))
             
         done
-        echo ILS,$filename,$((soma_nanosegundos / tentativas)), $((soma_segundos / tentativas)), $((soma_minutos / tentativas)),$bins
+        echo ILS,$filename,$((soma_nanosegundos / tentativas)),$((soma_segundos / tentativas)),$((soma_minutos / tentativas)),$bins
     done
