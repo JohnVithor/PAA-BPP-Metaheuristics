@@ -16,16 +16,19 @@
 #include "SwapNeighborhood.hpp"
 #include "SwapDisturbance.hpp"
 #include "SideDisturbance.hpp"
+#include "IteratedLocalSearch.hpp"
 #include "GRASP.hpp"
 
 int main(int argc, char const *argv[]) {
-    if (argc != 10) {
+    if (argc != 12) {
         std::cout << "O programa deve receber o caminho para arquivo com os dados da instância." << std::endl;
         std::cout << "A seed para realizar o shuffle dos elementos antes de aplicar o algoritmo escolhido (Os items já estão ordenados nos arquivos)" << std::endl;
         std::cout << "Em seguida o tempo máximo em minutos que o programa pode executar até encontrar o resultado ótimo" << std::endl;
 
         std::cout << "Então os parametros para o algoritmo GRASP:" << std::endl;
-        std::cout << "Tempo máximo do passo de busca local" << std::endl;
+        std::cout << "Quantidade de perturbações para o ILS" << std::endl;
+        std::cout << "Número máximo de iterações sem melhora no ILS" << std::endl;
+        std::cout << "Tempo máximo de execução do ILS" << std::endl;
         std::cout << "Valor inicial do parametro alpha, entre 0 e 1" << std::endl;
         std::cout << "Número máximo de iterações sem melhora, número máximo de iterações" << std::endl;
         std::cout << "Quantidade de iterações sem melhora necessárias para iniciar o incremento do alpha"  << std::endl;
@@ -65,21 +68,25 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
-    size_t max_time_searching = std::strtoul(argv[4], nullptr, 10);
-    double initial_alpha = std::strtod(argv[5], nullptr);
-    size_t max_not_improvements = std::strtoul(argv[6], nullptr, 10);
-    size_t max_steps = std::strtoul(argv[7], nullptr, 10);
-    size_t start_increment = std::strtoul(argv[8], nullptr, 10);
+    size_t disturbance_rounds = std::strtoul(argv[4], nullptr, 10);
+    size_t max_not_improvements_ils = std::strtoul(argv[5], nullptr, 10);
+    size_t max_time_searching = std::strtoul(argv[6], nullptr, 10);
+    double initial_alpha = std::strtod(argv[7], nullptr);
+    size_t max_not_improvements = std::strtoul(argv[8], nullptr, 10);
+    size_t max_steps = std::strtoul(argv[9], nullptr, 10);
+    size_t start_increment = std::strtoul(argv[10], nullptr, 10);
 
-    const long detail_level = std::strtol(argv[9], nullptr, 10);
+    const long detail_level = std::strtol(argv[11], nullptr, 10);
     if (!(detail_level > -1 && detail_level < 4)) {
         std::cout << "O nível de detalhe deve ser qualquer inteiro entre {0,1,2,3}" << std::endl;
         return 1;
     }
     ProblemInstance instance(C, N, items);
     SwapNeighborhood neighborhood;
-    LocalSearch lsearch(&instance, &neighborhood);
-    GRASP search(&instance, (*uid)(*dre), &lsearch, max_time_searching, initial_alpha, max_not_improvements, max_steps, start_increment);
+    SwapDisturbance disturbance(dre, uid);
+    IteratedLocalSearch ils(&instance, &neighborhood, &disturbance, disturbance_rounds, max_not_improvements_ils);
+
+    GRASP search(&instance, (*uid)(*dre), &ils, max_time_searching, initial_alpha, max_not_improvements, max_steps, start_increment);
 
     const std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     

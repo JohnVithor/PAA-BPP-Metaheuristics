@@ -15,7 +15,7 @@ files=$(ls $path_instances)
         bins=0
         for tentativa in $(seq $tentativas)
         do
-            ./bin/Genetic_driver $path_instances$filename $seed $max_time 10 0.15 0.75 1000 1000 3 > ./results/Genetic$filename$tentativa.txt
+            ./bin/Genetic_driver $path_instances$filename $seed $max_time 10 0.2 0.75 1000 1000 3 > ./results/Genetic$filename$tentativa.txt
             bins=$(sed '1!d' ./results/Genetic$filename$tentativa.txt)
             bins="${bins##* }"
 

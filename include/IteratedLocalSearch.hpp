@@ -11,8 +11,9 @@
 #include "ProblemInstance.hpp"
 #include "Neighborhood.hpp"
 #include "Disturbance.hpp"
+#include "Metaheuristic.hpp"
 
-class IteratedLocalSearch
+class IteratedLocalSearch : public Metaheuristic
 {
     private:
         const ProblemInstance* _problemInstance;

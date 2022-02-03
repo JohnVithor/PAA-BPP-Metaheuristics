@@ -12,8 +12,9 @@
 #include "Disturbance.hpp"
 #include "CrossOver.hpp"
 #include "Selection.hpp"
+#include "Metaheuristic.hpp"
 
-class Genetic
+class Genetic : public Metaheuristic
 {
     private:
         const ProblemInstance* _problemInstance;

@@ -75,7 +75,7 @@ Solution* GRASP::Run(Solution *initial_solution, const long max_time_minutes) {
         return initial_solution;
     }
     _problemInstance->SortItemsDecreasing();
-    Solution* best = initial_solution;
+    Solution* best = _seacher->Run(initial_solution, _max_time_searching);
     size_t not_improved_count = 0;
     const std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();

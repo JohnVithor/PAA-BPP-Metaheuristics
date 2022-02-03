@@ -56,46 +56,14 @@ Solution* Genetic::Run(Solution *initial_solution, const long max_time_minutes) 
         population[0] = new_population[0];
         Solution* pop_best = population[0];
 
-        std::vector<size_t> migration(_size/10);
-        size_t current_max = 0;
         for (size_t i = 1; i < _size; ++i) {
             delete population[i];
             new_population[i]->SetNumberBins(_problemInstance->EvaluateSolution(new_population[i]));
             population[i] = new_population[i];
             if (population[i]->GetNumberBins() < pop_best->GetNumberBins()) {
                 pop_best = population[i]->Copy();
-            } else {
-                if (migration.size() < _size/10) {
-                    migration.push_back(i);
-                    if (population[i]->GetNumberBins() > current_max) {
-                        current_max = population[i]->GetNumberBins();
-                    }
-                } else {
-                    if (population[i]->GetNumberBins() > current_max) {
-                        size_t max = 0;
-                        size_t p_max = current_max;
-                        for (size_t j = 1; j < migration.size(); ++j) {
-                            if (population[j]->GetNumberBins() > population[migration[max]]->GetNumberBins()) {
-                                p_max = population[migration[max]]->GetNumberBins();
-                                max = j;
-                            } else {
-                                if (population[j]->GetNumberBins() == population[migration[max]]->GetNumberBins()){
-                                    p_max = population[migration[max]]->GetNumberBins();
-                                }
-                            }
-                        }
-                        migration.at(max) = i;
-                        current_max = p_max;
-                    }
-                }
             }
         }
-
-        for (size_t i = 0; i < migration.size(); ++i) {
-            population[migration[i]] = _problemInstance->GenerateRandomSolution(_distribuition(_engine));
-            population[migration[i]]->SetNumberBins(_problemInstance->EvaluateSolution(population[migration[i]]));
-        }
-        migration.clear();
 
         if (pop_best->GetNumberBins() < best->GetNumberBins()) {
             delete best;

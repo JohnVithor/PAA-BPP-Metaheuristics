@@ -29,7 +29,7 @@ Genetic_driver: $(OBJ_DIR)/Genetic_driver.o $(OBJ_DIR)/ProblemInstance.o $(OBJ_D
 $(OBJ_DIR)/Genetic_driver.o: $(SRC_DIR)/Genetic_driver.cpp
 	$(CC) -c $(CFLAGS) -I$(INC_DIR)/ -o $@ $<	
 
-GRASP_driver: $(OBJ_DIR)/GRASP_driver.o $(OBJ_DIR)/ProblemInstance.o $(OBJ_DIR)/GRASP.o $(OBJ_DIR)/LocalSearch.o
+GRASP_driver: $(OBJ_DIR)/GRASP_driver.o $(OBJ_DIR)/ProblemInstance.o $(OBJ_DIR)/GRASP.o $(OBJ_DIR)/IteratedLocalSearch.o 
 	$(CC) $(CFLAGS) -o $(BIN_DIR)/$@ $^
 
 $(OBJ_DIR)/GRASP_driver.o: $(SRC_DIR)/GRASP_driver.cpp
