@@ -1,0 +1,16 @@
+Algoritmo,Instancia,Tempo_Nanosegundos,Tempo_Segundos,Tempo_Minutos,N_bins
+Genetic,N1C1W1_B.txt,33170,0,0,31
+Genetic,N1C1W1_C.txt,3633685280,3,0,21
+Genetic,N1C1W1_N.txt,3745890180,3,0,26
+Genetic,N1C2W1_H.txt,34810,0,0,23
+Genetic,N1C2W1_I.txt,39470,0,0,27
+Genetic,N1C2W1_K.txt,35830,0,0,24
+Genetic,N1C2W1_L.txt,36270,0,0,25
+Genetic,N1C3W1_F.txt,37740,0,0,20
+Genetic,N2C1W1_A.txt,8041934500,7,0,48
+Genetic,N2C2W1_J.txt,62330,0,0,42
+Genetic,N2C3W1_A.txt,70870,0,0,35
+Genetic,N3C1W1_A.txt,16996023350,16,0,106
+Genetic,N3C1W4_S.txt,106160,0,0,145
+Genetic,N4C1W1_L.txt,324040,0,0,258
+Genetic,N4C1W1_M.txt,41647026460,41,0,246

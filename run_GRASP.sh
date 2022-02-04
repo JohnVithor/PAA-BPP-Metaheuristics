@@ -15,7 +15,7 @@ files=$(ls $path_instances)
         bins=0
         for tentativa in $(seq $tentativas)
         do
-            ./bin/GRASP_driver $path_instances$filename $seed $max_time 50 200 1 0 1000 10000 10 3 > ./results/GRASP$filename$tentativa.txt
+            ./bin/GRASP_driver $path_instances$filename $seed $max_time 50 200 1 0 1000 10 3 > ./results/GRASP$filename$tentativa.txt
             bins=$(sed '1!d' ./results/GRASP$filename$tentativa.txt)
             bins="${bins##* }"
 

@@ -1,0 +1,5 @@
+Algoritmo,Instancia,Tempo_Nanosegundos,Tempo_Segundos,Tempo_Minutos,N_bins
+GRASP,Hard28_BPP119.txt,53562902400,53,0,77
+GRASP,Hard28_BPP13.txt,39576948550,39,0,68
+GRASP,Hard28_BPP14.txt,24821367380,24,0,62
+GRASP,Hard28_BPP144.txt,50267800850,49,0,74

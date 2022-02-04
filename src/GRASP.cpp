@@ -29,7 +29,7 @@ Solution* GRASP::GenerateSolution(const double alpha) {
         for (size_t j = 0; j < bins; ++j) {
             if (bins_c[j] + _problemInstance->GetItems()[i] <= _problemInstance->GetBinMaxCapacity()) {
                 candidates.push_back(j);
-                candidates_values.push_back(bins_c[j]);
+                candidates_values.push_back(_problemInstance->GetBinMaxCapacity()-bins_c[j]);
             }
         }
         if (!candidates.empty()) {

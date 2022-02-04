@@ -3,6 +3,7 @@
 #ifndef _SOLUTION_H_
 #define _SOLUTION_H_
 
+#include <memory>
 #include <cstdlib>
 #include <iostream>
 #include <algorithm>
@@ -12,21 +13,22 @@ class Solution
     private:
         size_t _numberItens;
         size_t _numberBins;
-        size_t* _itemsOrder;
+        std::unique_ptr<size_t[]> _itemsOrder;
     public:
         Solution(size_t numberItens, size_t numberBins, size_t* itensOrder)
             : _numberItens(numberItens), _numberBins(numberBins), _itemsOrder(itensOrder)
         {/* Empty */};
-        ~Solution() { delete[] _itemsOrder; } ;
 
         const size_t GetNumberItems() const { return _numberItens; };
         size_t GetNumberBins() { return _numberBins; };
         void SetNumberBins(size_t newNumberBins) { _numberBins = newNumberBins; };
-        size_t* GetItemsOrder() { return _itemsOrder; };
+        size_t* GetItemsOrder() { return _itemsOrder.get(); };
 
         Solution* Copy() const {
             Solution* copy = new Solution(_numberItens, _numberBins, new size_t[_numberItens]);
-            std::copy(_itemsOrder, _itemsOrder+_numberItens, copy->_itemsOrder);
+            for (size_t i = 0; i < _numberItens; ++i) {
+                (*copy)[i] = _itemsOrder[i];
+            }
             return copy;
         };
 
