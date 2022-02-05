@@ -99,6 +99,7 @@ Solution* GRASP::Run(Solution *initial_solution, const long max_time_minutes) {
             delete current;
             ++not_improved_count;
         }
+        end = std::chrono::steady_clock::now();
     }
     return best;
 }
